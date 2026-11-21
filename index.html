@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cao Nguyệt Thu – Bài tập Thiết kế Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#52aeff; --brand-d:#1e7fd6; --brand-dd:#0b4f94; --brand-l:#d7ecff;
+  --ink:#0f2a43; --muted:#4b6580; --paper:rgba(247,251,255,.82); --card:#ffffff;
+  --bg1:#eaf5ff; --bg2:#bfe0ff; --line:#52aeff;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ink:#e9f4ff;--muted:#a9c4de;--paper:rgba(14,32,52,.78);--card:#112a44;--bg1:#071a2e;--bg2:#0b3158;--brand-l:#17406b;--brand-d:#6bbcff}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;font-family:"Be Vietnam Pro","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:40px 16px 150px}
+
+/* ===== NỀN ĐỘNG ===== */
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+.b1{width:420px;height:420px;background:var(--brand);top:-120px;left:-100px}
+.b2{width:360px;height:360px;background:#8fd0ff;right:-80px;top:20%;animation-delay:-6s}
+.b3{width:300px;height:300px;background:#3b8fe8;left:25%;bottom:-120px;animation-delay:-12s}
+@keyframes drift{to{transform:translate(60px,-40px) scale(1.15)}}
+
+.bubble{position:fixed;bottom:-40px;z-index:0;border-radius:50%;pointer-events:none;
+  border:1.5px solid rgba(255,255,255,.8);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),rgba(82,174,255,.15));
+  animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115vh) translateX(var(--sx,20px));opacity:.2}}
+
+.waves{position:fixed;left:0;right:0;bottom:0;height:130px;z-index:1;pointer-events:none}
+.wave{position:absolute;left:0;right:0;bottom:0;height:100%;background-repeat:repeat-x;background-size:1440px 100%}
+.w1{opacity:.45;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath fill='%2352aeff' d='M0 60 C240 0 480 120 720 60 C960 0 1200 120 1440 60 V120 H0Z'/%3E%3C/svg%3E");animation:wave 14s linear infinite}
+.w2{opacity:.65;height:80%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath fill='%231e7fd6' d='M0 50 C300 110 420 0 720 50 C1020 100 1140 0 1440 50 V120 H0Z'/%3E%3C/svg%3E");animation:wave 9s linear infinite reverse}
+.w3{opacity:.9;height:50%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath fill='%230b4f94' d='M0 70 C180 20 360 110 720 60 C1080 10 1260 100 1440 70 V120 H0Z'/%3E%3C/svg%3E");animation:wave 6s linear infinite}
+@keyframes wave{to{background-position-x:1440px}}
+
+.glow{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:1;left:0;top:0;
+  background:radial-gradient(circle,rgba(82,174,255,.28),transparent 65%);transform:translate(-50%,-50%);transition:opacity .3s}
+
+/* ===== KHUNG CHÍNH ===== */
+.panel{position:relative;z-index:2;width:100%;max-width:980px;padding:46px 40px 40px;border-radius:22px;
+  background:var(--paper);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:2px solid var(--line);box-shadow:0 24px 60px rgba(30,127,214,.28),0 0 0 8px rgba(82,174,255,.12);
+  animation:panelIn .9s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(40px) scale(.96)}}
+.panel::before{content:"";position:absolute;inset:-2px;border-radius:22px;padding:2px;z-index:-1;
+  background:conic-gradient(from var(--a,0deg),transparent 0 70%,var(--brand) 85%,#fff 92%,transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:spin 6s linear infinite}
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes spin{to{--a:360deg}}
+
+header{text-align:center}
+.avatar{width:92px;height:92px;margin:0 auto 18px;border-radius:50%;position:relative;display:grid;place-items:center;
+  font:700 30px "Oswald",sans-serif;color:#fff;letter-spacing:1px;
+  background:linear-gradient(140deg,var(--brand),var(--brand-dd));box-shadow:0 10px 24px rgba(30,127,214,.4);animation:float 4s ease-in-out infinite alternate}
+.avatar::before,.avatar::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--brand);opacity:.6;animation:ping 2.6s ease-out infinite}
+.avatar::after{animation-delay:1.3s}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover}
+@keyframes ping{to{transform:scale(1.35);opacity:0}}
+@keyframes float{to{transform:translateY(-8px)}}
+
+h1{font:700 clamp(34px,7vw,64px)/1.1 "Oswald","Impact",sans-serif;text-transform:uppercase;letter-spacing:2px;color:var(--brand-d);
+  text-shadow:0 4px 0 rgba(82,174,255,.25)}
+h1 span{display:inline-block;opacity:0;transform:translateY(30px) rotate(6deg);animation:letter .6s cubic-bezier(.2,.9,.3,1.4) forwards;transition:transform .2s,color .2s}
+h1 span:hover{transform:translateY(-8px) scale(1.12);color:var(--brand)}
+@keyframes letter{to{opacity:1;transform:none}}
+.sub{margin-top:12px;color:var(--muted);font-size:clamp(13px,2vw,16px)}
+.typed{margin:14px auto 0;display:inline-flex;gap:8px;align-items:center;padding:6px 16px;border-radius:99px;
+  background:var(--brand-l);color:var(--brand-dd);font-weight:600;font-size:14px;min-height:34px}
+@media (prefers-color-scheme:dark){.typed{color:#bfe3ff}}
+.typed i{width:2px;height:16px;background:currentColor;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ===== THẺ BÀI TẬP ===== */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px;perspective:1100px}
+.card{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;overflow:hidden;
+  background:var(--card);border:1.5px solid var(--brand);border-radius:16px;
+  transform:rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;transition:transform .15s ease-out,box-shadow .3s;
+  box-shadow:0 8px 20px rgba(30,127,214,.15);opacity:0;animation:cardIn .8s .5s cubic-bezier(.2,.9,.3,1.2) forwards}
+.card:nth-child(2){animation-delay:.75s}
+@keyframes cardIn{from{opacity:0;transform:translateY(50px) rotateX(15deg)}to{opacity:1}}
+.card:hover{box-shadow:0 22px 44px rgba(30,127,214,.38)}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(circle 220px at var(--mx) var(--my),rgba(255,255,255,.55),transparent 70%)}
+.card:hover::after{opacity:1}
+
+.preview{position:relative;height:170px;overflow:hidden;background:linear-gradient(135deg,var(--brand),var(--brand-dd));border-bottom:1.5px solid var(--brand)}
+.preview iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;pointer-events:none;transform-origin:0 0;background:#fff}
+.preview .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:54px;opacity:.9}
+.preview::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,79,148,.35),transparent 50%)}
+
+.info{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.badge{background:var(--brand-d);color:#fff;font-weight:700;font-size:12px;padding:4px 12px;border-radius:99px;letter-spacing:.5px}
+.status{font-size:13px;font-weight:600;color:var(--brand-d);display:flex;align-items:center;gap:6px}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 0 0 rgba(46,204,113,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{to{box-shadow:0 0 0 9px rgba(46,204,113,0)}}
+h2{font-size:21px;margin-top:8px}
+.desc{color:var(--muted);font-size:14px;line-height:1.6}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tags b{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--brand-l);color:var(--brand-dd)}
+@media (prefers-color-scheme:dark){.tags b{color:#bfe3ff}}
+.cta{margin-top:auto;padding-top:14px;font-weight:700;color:var(--brand-d);display:flex;align-items:center;gap:8px}
+.cta svg{transition:transform .25s}
+.card:hover .cta svg{transform:translateX(8px)}
+
+footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted)}
+footer span{color:var(--brand-d);font-weight:600}
+
+@media (max-width:760px){.grid{grid-template-columns:1fr}.panel{padding:34px 20px 28px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="glow" id="glow"></div>
+<div class="waves"><div class="wave w1"></div><div class="wave w2"></div><div class="wave w3"></div></div>
+
+<main class="panel">
+  <header>
+    <div class="avatar">
+      CT
+      <!-- Dùng ảnh thật: <img src="anh.jpg" alt="Cao Nguyệt Thu"> -->
+    </div>
+    <h1 id="name">Cao Nguyệt Thu</h1>
+    <p class="sub">Sinh viên CNTT – Trường Đại học Sư phạm TP.HCM | Bài tập Thiết kế Web</p>
+    <div class="typed"><span id="typed"></span><i></i></div>
+  </header>
+
+  <section class="grid">
+    <a class="card" href="https://fannaotancuabachquocvuong.github.io/CV/cvcaonguyetthu.html" target="_blank" rel="noopener">
+      <div class="preview">
+        <div class="ph">📄</div>
+        <iframe data-src="https://fannaotancuabachquocvuong.github.io/CV/cvcaonguyetthu.html" title="Xem trước CV" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="info">
+        <div class="top"><span class="badge">BÀI 01</span><span class="status">Đã hoàn thành</span></div>
+        <h2>CV Cá Nhân</h2>
+        <p class="desc">Trang giới thiệu bản thân, học vấn, kỹ năng, kinh nghiệm trợ giảng và các hoạt động Đoàn – Hội, câu lạc bộ.</p>
+        <div class="tags"><b>HTML</b><b>CSS Grid</b><b>Responsive</b></div>
+        <div class="cta">Xem CV
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="https://fannaotancuabachquocvuong.github.io/Ho_ca/ho-ca%20(1).html" target="_blank" rel="noopener">
+      <div class="preview">
+        <div class="ph">🐠</div>
+        <iframe data-src="https://fannaotancuabachquocvuong.github.io/Ho_ca/ho-ca%20(1).html" title="Xem trước Hồ cá" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="info">
+        <div class="top"><span class="badge">BÀI 02</span><span class="status">Xem trang</span></div>
+        <h2>Hồ Cá Vui Nhộn</h2>
+        <p class="desc">Hồ cá toàn màn hình: nàng tiên cá ở giữa, cá mập, rùa và thợ lặn bơi vòng quanh bằng HTML, CSS Animation và JavaScript.</p>
+        <div class="tags"><b>HTML</b><b>CSS Animation</b><b>JavaScript</b></div>
+        <div class="cta">Xem hồ cá
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <footer>Thiết kế bằng <span>HTML</span> &amp; <span>CSS</span> · Bài tập Thiết kế Web · 2026</footer>
+</main>
+
+<script>
+  /* 1. Tách chữ tên để hiệu ứng xuất hiện từng chữ */
+  const h1 = document.getElementById('name');
+  const text = h1.textContent; h1.textContent = ''; h1.setAttribute('aria-label', text);
+  [...text].forEach((ch, i) => {
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? '\u00A0' : ch;
+    s.style.animationDelay = (0.15 + i * 0.06) + 's';
+    s.setAttribute('aria-hidden', 'true');
+    h1.appendChild(s);
+  });
+
+  /* 2. Dòng chữ tự gõ */
+  const lines = ['Yêu thích Công nghệ thông tin 💻', 'Đam mê thiết kế web 🎨', 'Sư phạm tương lai 📚', 'Chơi guitar 🎸'];
+  const el = document.getElementById('typed');
+  let li = 0, ci = 0, del = false;
+  (function tick() {
+    const cur = lines[li];
+    el.textContent = cur.slice(0, ci);
+    if (!del && ci === cur.length) { del = true; return setTimeout(tick, 1600); }
+    if (del && ci === 0) { del = false; li = (li + 1) % lines.length; }
+    ci += del ? -1 : 1;
+    setTimeout(tick, del ? 35 : 75);
+  })();
+
+  /* 3. Bong bóng nổi */
+  for (let i = 0; i < 24; i++) {
+    const b = document.createElement('span'), size = 8 + Math.random() * 26;
+    b.className = 'bubble';
+    b.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;--sx:${(Math.random()-.5)*80}px;` +
+                      `animation-duration:${9 + Math.random()*10}s;animation-delay:${-Math.random()*16}s`;
+    document.body.appendChild(b);
+  }
+
+  /* 4. Vệt sáng theo chuột */
+  const glow = document.getElementById('glow');
+  addEventListener('pointermove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+
+  /* 5. Thẻ nghiêng 3D theo chuột */
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--ry', ((x - .5) * 12) + 'deg');
+      card.style.setProperty('--rx', ((.5 - y) * 12) + 'deg');
+      card.style.setProperty('--mx', (x * 100) + '%');
+      card.style.setProperty('--my', (y * 100) + '%');
+    });
+    card.addEventListener('pointerleave', () => { card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
+  });
+
+  /* 6. Xem trước trang (iframe thu nhỏ vừa khung) */
+  function fitPreviews() {
+    document.querySelectorAll('.preview').forEach(p => {
+      const f = p.querySelector('iframe');
+      f.style.transform = `scale(${p.clientWidth / 1280})`;
+      f.style.height = (p.clientHeight / (p.clientWidth / 1280)) + 'px';
+    });
+  }
+  document.querySelectorAll('iframe[data-src]').forEach(f => { f.src = f.dataset.src; });
+  addEventListener('resize', fitPreviews); fitPreviews();
+</script>
+</body>
+</html>
